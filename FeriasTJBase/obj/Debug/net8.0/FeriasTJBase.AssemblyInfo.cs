@@ -11,13 +11,13 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("81ba6d8d-17f5-4a70-9d23-d4cb4f4b4e68")]
-[assembly: System.Reflection.AssemblyCompanyAttribute("FeriasTJ")]
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("c38d96b5-a2db-4409-b394-b7ffb6e34b5e")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("FeriasTJBase")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6b75723ad8f32038ee90ff228caf8efdaf510332")]
-[assembly: System.Reflection.AssemblyProductAttribute("FeriasTJ")]
-[assembly: System.Reflection.AssemblyTitleAttribute("FeriasTJ")]
+[assembly: System.Reflection.AssemblyProductAttribute("FeriasTJBase")]
+[assembly: System.Reflection.AssemblyTitleAttribute("FeriasTJBase")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Gerado pela classe WriteCodeFragment do MSBuild.

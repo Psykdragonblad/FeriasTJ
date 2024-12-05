@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FeriasTJBase")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cb2985dc2dd2762bde388016ab8e3c45d156cdad")]
 [assembly: System.Reflection.AssemblyProductAttribute("FeriasTJBase")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FeriasTJBase")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

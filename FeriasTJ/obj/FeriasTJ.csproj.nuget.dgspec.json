@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\marcsantsouza\\source\\repos\\FeriasTJ\\FeriasTJ\\FeriasTJ.csproj": {}
+    "C:\\SOLUTIS_TJBA\\CURSOS_ALURA\\FeriasTJ\\FeriasTJ\\FeriasTJ.csproj": {}
   },
   "projects": {
-    "C:\\Users\\marcsantsouza\\source\\repos\\FeriasTJ\\FeriasTJ\\FeriasTJ.csproj": {
+    "C:\\SOLUTIS_TJBA\\CURSOS_ALURA\\FeriasTJ\\FeriasTJ\\FeriasTJ.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marcsantsouza\\source\\repos\\FeriasTJ\\FeriasTJ\\FeriasTJ.csproj",
+        "projectUniqueName": "C:\\SOLUTIS_TJBA\\CURSOS_ALURA\\FeriasTJ\\FeriasTJ\\FeriasTJ.csproj",
         "projectName": "FeriasTJ",
-        "projectPath": "C:\\Users\\marcsantsouza\\source\\repos\\FeriasTJ\\FeriasTJ\\FeriasTJ.csproj",
-        "packagesPath": "C:\\Users\\marcsantsouza\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marcsantsouza\\source\\repos\\FeriasTJ\\FeriasTJ\\obj\\",
+        "projectPath": "C:\\SOLUTIS_TJBA\\CURSOS_ALURA\\FeriasTJ\\FeriasTJ\\FeriasTJ.csproj",
+        "packagesPath": "C:\\Users\\carlito.silva\\.nuget\\packages\\",
+        "outputPath": "C:\\SOLUTIS_TJBA\\CURSOS_ALURA\\FeriasTJ\\FeriasTJ\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\marcsantsouza\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\carlito.silva\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

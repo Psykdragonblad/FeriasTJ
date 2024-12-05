@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Novo Perfil",
+    "Projects": [
+      {
+        "Path": "FeriasTJ\\FeriasTJ.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "FeriasTJBase\\FeriasTJBase.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

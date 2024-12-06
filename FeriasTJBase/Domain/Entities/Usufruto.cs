@@ -1,4 +1,4 @@
-﻿namespace FeriasTJ.Domain.Entities
+﻿namespace FeriasTJBase.Domain.Entities
 {
     public class Usufruto
     {

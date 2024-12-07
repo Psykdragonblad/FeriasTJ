@@ -7,6 +7,6 @@
         public DateTime UsufrutoInicial { get; set; }
         public DateTime UsufrutoFinal { get; set; }
         public bool Status { get; set; }
-        public Ferias Ferias { get; set; } // Propriedade de navegação
+        //public Ferias Ferias { get; set; } // Propriedade de navegação
     }
 }

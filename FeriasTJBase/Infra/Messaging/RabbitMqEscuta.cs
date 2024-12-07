@@ -1,4 +1,5 @@
-﻿using FeriasTJBase.Domain.Entities;
+﻿using FeriasTJBase.Application.Interface;
+using FeriasTJBase.Domain.Entities;
 using FeriasTJBase.Domain.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,11 +16,12 @@ namespace FeriasTJBase.Infra.Messaging
         private IModel _channel;
         private IConnection _connection;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IDescriptografiaService _descriptografiaService;
 
-        public RabbitMqEscuta(IServiceScopeFactory serviceScopeFactory)
+        public RabbitMqEscuta(IServiceScopeFactory serviceScopeFactory, IDescriptografiaService descriptografiaService)
         {
             _serviceScopeFactory = serviceScopeFactory;
-
+            _descriptografiaService = descriptografiaService;
             var factory = new ConnectionFactory() { HostName = "localhost", Port = 5672 };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
@@ -34,20 +36,23 @@ namespace FeriasTJBase.Infra.Messaging
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                var ferias = JsonConvert.DeserializeObject<Ferias>(message);
+
+                //Descriptografar a mensagem
+                var descriptografado = _descriptografiaService.Descriptar(message);
+                var ferias = JsonConvert.DeserializeObject<Ferias>(descriptografado);
 
                 if (ferias != null)
                 {
-                    Console.WriteLine($"Entrou: {message}");
+                    //Console.WriteLine($"Entrou: {message}");
 
                     // Cria um novo escopo para resolver IFeriasRepository
                     using (var scope = _serviceScopeFactory.CreateScope())
                     {
                         var feriasRepository = scope.ServiceProvider.GetRequiredService<IFeriasRepository>();
-                         await feriasRepository.SalvarFerias(ferias);
+                        await feriasRepository.SalvarFerias(ferias);
                     }
                 }
-                Console.WriteLine($"Mensagem recebida: {message}");
+                //Console.WriteLine($"Mensagem recebida: {message}");
             };
 
             _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);

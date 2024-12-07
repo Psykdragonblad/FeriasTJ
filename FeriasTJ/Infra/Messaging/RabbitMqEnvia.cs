@@ -1,4 +1,5 @@
-﻿using FeriasTJ.Domain.Entities;
+﻿using FeriasTJ.Application.Interface;
+using FeriasTJ.Domain.Entities;
 using FeriasTJ.Infra.Interface;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -8,6 +9,13 @@ namespace FeriasTJ.Infra.Messaging
 {
     public class RabbitMqEnvia : IRabbitMqEnvia
     {
+        private readonly ICriptografiaSerivce _criptografiaSerivce;
+
+        public RabbitMqEnvia(ICriptografiaSerivce criptografiaSerivce)
+        {
+            _criptografiaSerivce = criptografiaSerivce;
+        }
+
         public void SendFerias(Ferias ferias)
         {
             var factory = new ConnectionFactory() { HostName = "localhost" };
@@ -18,7 +26,10 @@ namespace FeriasTJ.Infra.Messaging
 
             // Serializa o objeto Ferias em JSON
             var jsonMessage = JsonConvert.SerializeObject(ferias);
-            var body = Encoding.UTF8.GetBytes(jsonMessage);
+            
+            // Criptogragar a mensagem
+            var encriptado = _criptografiaSerivce.Encriptar(jsonMessage);
+            var body = Encoding.UTF8.GetBytes(encriptado);
 
             channel.BasicPublish(exchange: "", routingKey: "minha-fila", basicProperties: null, body: body);
         }

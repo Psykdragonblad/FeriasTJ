@@ -11,7 +11,10 @@ namespace FeriasTJ.Infra.Security
 
         public CriptografiaService()
         {
-            var key = "teste";
+            string key = Environment.GetEnvironmentVariable("keyferiastj"); // Criar variável de ambiente com esse nome e o valor pode ser qualquer coisa
+            if (string.IsNullOrEmpty(key)) { 
+                throw new ArgumentNullException(nameof(key));
+            }
             using var sha256 = SHA256.Create();
             _key = sha256.ComputeHash(Encoding.UTF8.GetBytes(key));
             _iv = new byte[16]; // IV fixo para simplicidade; considere um IV dinâmico e envie junto com a mensagem.

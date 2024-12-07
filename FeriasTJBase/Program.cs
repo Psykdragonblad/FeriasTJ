@@ -1,7 +1,9 @@
+using FeriasTJBase.Application.Interface;
 using FeriasTJBase.Domain.Interface;
 using FeriasTJBase.Infra.Configurations;
 using FeriasTJBase.Infra.Messaging;
 using FeriasTJBase.Infra.Repositories;
+using FeriasTJBase.Infra.Security;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddHostedService<RabbitMqEscuta>();
 builder.Services.AddScoped<IFeriasRepository, FeriasRepository>();
+builder.Services.AddSingleton<IDescriptografiaService, DescriptografiaService>();
+builder.Services.AddHostedService<RabbitMqEscuta>();
+
 
 builder.Services.AddDbContext<PgDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PgConnection")));

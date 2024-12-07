@@ -1,5 +1,5 @@
 ﻿using FeriasTJ.Domain.Entities;
-using Microsoft.AspNetCore.Connections;
+using FeriasTJ.Infra.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -7,15 +7,24 @@ using System.Text;
 
 namespace FeriasTJ.Controllers
 {
-  
+
     [ApiController]
     [Route("api/[controller]")]
     public class MessageController : ControllerBase
     {
+        private readonly IRabbitMqEnvia _rabbitMqEnvia;
+
+        public MessageController(IRabbitMqEnvia rabbitMqEnvia)
+        {
+            _rabbitMqEnvia = rabbitMqEnvia;
+        }
+
         [HttpPost]
         public IActionResult SendMessage([FromBody] Ferias message)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost", Port =5672 };
+
+            _rabbitMqEnvia.SendFerias(message);
+            /*var factory = new ConnectionFactory() { HostName = "localhost", Port =5672 };
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
@@ -30,7 +39,7 @@ namespace FeriasTJ.Controllers
             channel.BasicPublish(exchange: "",
                                  routingKey: queueName,
                                  basicProperties: null,
-                                 body: body);
+                                 body: body);*/
 
             return Ok("Mensagem enviada para a fila");
         }

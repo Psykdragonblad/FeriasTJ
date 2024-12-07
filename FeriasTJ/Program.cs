@@ -1,5 +1,7 @@
+using FeriasTJ.Application.Interface;
 using FeriasTJ.Infra.Interface;
 using FeriasTJ.Infra.Messaging;
+using FeriasTJ.Infra.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IRabbitMqEnvia, RabbitMqEnvia>();
+builder.Services.AddScoped<ICriptografiaSerivce, CriptografiaService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

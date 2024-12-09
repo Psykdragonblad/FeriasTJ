@@ -1,6 +1,7 @@
 ﻿using FeriasTJBase.Domain.Entities;
 using FeriasTJBase.Domain.Interface;
 using FeriasTJBase.Infra.Configurations;
+using Microsoft.EntityFrameworkCore;
 
 namespace FeriasTJBase.Infra.Repositories
 {
@@ -11,6 +12,11 @@ namespace FeriasTJBase.Infra.Repositories
         public FeriasRepository(PgDbContext pgDbContext)
         {
             _pgDbContext = pgDbContext;
+        }
+
+        public async Task<IEnumerable<Ferias>> GetAllFeriasAsync()
+        {
+            return await _pgDbContext.Set<Ferias>().ToListAsync();          
         }
 
         public async Task SalvarFerias(Ferias ferias)

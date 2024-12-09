@@ -1,8 +1,8 @@
 using FeriasTJ.Application.Interface;
+using FeriasTJ.Application.Service;
 using FeriasTJ.Infra.Interface;
 using FeriasTJ.Infra.Messaging;
 using FeriasTJ.Infra.Security;
-using FeriasTJ.Infra.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.

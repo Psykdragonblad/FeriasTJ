@@ -1,4 +1,5 @@
 using FeriasTJBase.Application.Interface;
+using FeriasTJBase.Application.Services;
 using FeriasTJBase.Domain.Interface;
 using FeriasTJBase.Infra.Configurations;
 using FeriasTJBase.Infra.Messaging;
@@ -14,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IFeriasRepository, FeriasRepository>();
 builder.Services.AddSingleton<IDescriptografiaService, DescriptografiaService>();
 builder.Services.AddHostedService<RabbitMqEscuta>();
+builder.Services.AddScoped<IFeriasService, FeriasSerivce>();
 
 
 builder.Services.AddDbContext<PgDbContext>(options =>

@@ -7,7 +7,7 @@ using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
-namespace FeriasTJ.Infra.Service
+namespace FeriasTJ.Application.Service
 {
     public class ExcelService : IExcelService
     {
@@ -127,7 +127,7 @@ namespace FeriasTJ.Infra.Service
                     var usufruto = new Usufruto();
                     usufruto.UsufrutoInicial = Convert.ToDateTime(worksheet.Cells[row, 3].Text);
                     usufruto.UsufrutoFinal = Convert.ToDateTime(worksheet.Cells[row, 6].Text);
-                    usufruto.Status = (worksheet.Cells[row, 8].Text == "Ativo") ? true : false;
+                    usufruto.Status = worksheet.Cells[row, 8].Text == "Ativo" ? true : false;
                     ferias.Usufrutos.Add(usufruto);
                 }
             }

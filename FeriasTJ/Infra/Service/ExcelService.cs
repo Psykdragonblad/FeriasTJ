@@ -1,4 +1,8 @@
-﻿using FeriasTJ.Infra.Interface;
+﻿using FeriasTJ.Domain.Entities;
+using FeriasTJ.Infra.Interface;
+using FeriasTJ.Infra.Messaging;
+using FeriasTJ.Models;
+using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -10,9 +14,12 @@ namespace FeriasTJ.Infra.Service
 
         private readonly string _filePath;
 
-        public ExcelService()
+        private readonly IRabbitMqEnvia _rabbitMqEnvia;
+
+        public ExcelService(IRabbitMqEnvia rabbitMqEnvia)
         {
             _filePath = Directory.GetCurrentDirectory();
+            _rabbitMqEnvia = rabbitMqEnvia;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
         // Método para salvar arquivo no servidor.
@@ -99,5 +106,35 @@ namespace FeriasTJ.Infra.Service
 
             return result;
         }
+
+        public void ProcessarArquivo(FileUploadModel model)
+        {
+
+            var ferias = new Ferias();
+
+            using (var package = new ExcelPackage(new FileInfo(model.File.FileName)))
+            {
+                var worksheet = package.Workbook.Worksheets[0]; // Lê a primeira planilha
+
+                ferias.Matricula = Convert.ToInt32(worksheet.Name.Substring(0, 7));
+
+                ferias.PeriodoAquisitivoInicial = Convert.ToDateTime(worksheet.Cells[2, 3].Text);
+                ferias.PeriodoAquisitivoFinal = Convert.ToDateTime(worksheet.Cells[2, 6].Text);
+                int rowCount = worksheet.Dimension.Rows;
+
+                for (int row = 4; row <= rowCount; row++)
+                {
+                    var usufruto = new Usufruto();
+                    usufruto.UsufrutoInicial = Convert.ToDateTime(worksheet.Cells[row, 3].Text);
+                    usufruto.UsufrutoFinal = Convert.ToDateTime(worksheet.Cells[row, 6].Text);
+                    usufruto.Status = (worksheet.Cells[row, 8].Text == "Ativo") ? true : false;
+                    ferias.Usufrutos.Add(usufruto);
+                }
+            }
+
+            _rabbitMqEnvia.SendFerias(ferias);
+
+        }
+
     }
 }

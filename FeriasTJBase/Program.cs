@@ -18,6 +18,7 @@ builder.Services.AddHostedService<RabbitMqEscuta>();
 
 builder.Services.AddDbContext<PgDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PgConnection")));
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

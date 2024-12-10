@@ -22,5 +22,12 @@ namespace FeriasTJBase.UI.Controllers
             return Ok(listaFerias);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetPeriodoAquisitivoPorId(int id)
+        {
+            var listaFerias = _feriasService.GetPeriodoAquisitivoPorIdAsync(id);
+
+            return Ok(listaFerias);
+        }
     }
 }

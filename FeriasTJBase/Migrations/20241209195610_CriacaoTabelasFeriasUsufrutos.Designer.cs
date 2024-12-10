@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FeriasTJBase.Migrations
 {
     [DbContext(typeof(PgDbContext))]
-    [Migration("20241206152330_CreateTableFeriasUsufruto")]
-    partial class CreateTableFeriasUsufruto
+    [Migration("20241209195610_CriacaoTabelasFeriasUsufrutos")]
+    partial class CriacaoTabelasFeriasUsufrutos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,19 +36,15 @@ namespace FeriasTJBase.Migrations
                     b.Property<int>("Matricula")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("PeriodoAquisitivoFinal")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("PeriodoAquisitivoInicial")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("IdFerias");
 
-                    b.ToTable("Ferias");
+                    b.ToTable("ferias");
                 });
 
             modelBuilder.Entity("FeriasTJBase.Domain.Entities.Usufruto", b =>
@@ -66,16 +62,16 @@ namespace FeriasTJBase.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("UsufrutoFinal")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("UsufrutoInicial")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("IdUsufruto");
 
                     b.HasIndex("IdFerias");
 
-                    b.ToTable("Usufruto");
+                    b.ToTable("usufruto");
                 });
 
             modelBuilder.Entity("FeriasTJBase.Domain.Entities.Usufruto", b =>

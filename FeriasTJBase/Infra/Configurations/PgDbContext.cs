@@ -8,8 +8,11 @@ namespace FeriasTJBase.Infra.Configurations
     {
         public PgDbContext(DbContextOptions<PgDbContext> options) : base(options) { }
 
+
+
         public DbSet<Ferias> Ferias { get; set; }
         public DbSet<Usufruto> Usufruto { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,7 +21,7 @@ namespace FeriasTJBase.Infra.Configurations
 
             modelBuilder.Entity<Usufruto>()
                 .HasKey(f => f.IdUsufruto);
-
+           
             modelBuilder.Entity<Ferias>()
                 .HasMany(b => b.Usufrutos)
                 .WithOne(u => u.Ferias)

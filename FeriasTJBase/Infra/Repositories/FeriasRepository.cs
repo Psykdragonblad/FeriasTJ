@@ -1,4 +1,5 @@
-﻿using FeriasTJBase.Domain.Entities;
+﻿using FeriasTJBase.Application.Dtos.Ferias;
+using FeriasTJBase.Domain.Entities;
 using FeriasTJBase.Domain.Interface;
 using FeriasTJBase.Infra.Configurations;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,30 @@ namespace FeriasTJBase.Infra.Repositories
             _pgDbContext = pgDbContext;
         }
 
-        public async Task<IEnumerable<Ferias>> GetAllFeriasAsync()
+        public async Task<List<Ferias>> GetAllFeriasAsync()
         {
-            return await _pgDbContext.Set<Ferias>().ToListAsync();          
+            return  _pgDbContext.Set<Ferias>().Include(f => f.Usufrutos).ToList();
+            /*return  _pgDbContext.Set<Ferias>()
+                     .Include(f => f.Usufrutos)
+                     .ToList();*/
+            //return ferias;
+        }
+
+        public async Task<ConsultaPeriodoAquisitivoDto> GetPeriodoAquisitivoPorId(int id)
+        {
+            var ferias =  _pgDbContext.Set<Ferias>().FirstOrDefault(e => e.IdFerias == id);
+
+            if (ferias == null) { 
+                return new ConsultaPeriodoAquisitivoDto();
+            }
+
+            return new ConsultaPeriodoAquisitivoDto()
+            {
+                IdFerias = ferias.IdFerias,
+                Matricula = ferias.Matricula,
+                PeriodoAquisitivoInicial = ferias.PeriodoAquisitivoInicial,
+                PeriodoAquisitivoFinal = ferias.PeriodoAquisitivoFinal
+            };
         }
 
         public async Task SalvarFerias(Ferias ferias)

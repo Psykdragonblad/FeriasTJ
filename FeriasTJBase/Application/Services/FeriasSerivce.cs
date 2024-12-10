@@ -1,4 +1,5 @@
-﻿using FeriasTJBase.Application.Interface;
+﻿using FeriasTJBase.Application.Dtos.Ferias;
+using FeriasTJBase.Application.Interface;
 using FeriasTJBase.Domain.Entities;
 using FeriasTJBase.Domain.Interface;
 
@@ -13,9 +14,14 @@ namespace FeriasTJBase.Application.Services
             _feriasRepository = feriasRepository;
         }
 
-        public Task<IEnumerable<Ferias>> GetAllFerias()
+        public async Task<List<Ferias>> GetAllFerias()
         {
-            return _feriasRepository.GetAllFeriasAsync();
+            return await _feriasRepository.GetAllFeriasAsync();            
+        }
+
+        public Task<ConsultaPeriodoAquisitivoDto> GetPeriodoAquisitivoPorIdAsync(int id)
+        {
+           return  _feriasRepository.GetPeriodoAquisitivoPorId(id);
         }
     }
 }

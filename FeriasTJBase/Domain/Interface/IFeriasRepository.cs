@@ -1,4 +1,5 @@
-﻿using FeriasTJBase.Domain.Entities;
+﻿using FeriasTJBase.Application.Dtos.Ferias;
+using FeriasTJBase.Domain.Entities;
 
 namespace FeriasTJBase.Domain.Interface
 {
@@ -6,6 +7,8 @@ namespace FeriasTJBase.Domain.Interface
     {
         Task SalvarFerias(Ferias ferias);
 
-        Task<IEnumerable<Ferias>> GetAllFeriasAsync();
+        Task<List<Ferias>> GetAllFeriasAsync();
+
+        Task<ConsultaPeriodoAquisitivoDto> GetPeriodoAquisitivoPorId(int id);
     }
 }

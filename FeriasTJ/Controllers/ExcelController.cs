@@ -1,12 +1,6 @@
-﻿using FeriasTJ.Domain.Entities;
-using FeriasTJ.Infra.Interface;
-using FeriasTJ.Infra.Service;
+﻿using FeriasTJ.Infra.Interface;
 using FeriasTJ.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using OfficeOpenXml;
-using System.Threading;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FeriasTJ.Controllers
 {

@@ -3,9 +3,10 @@ using FeriasTJBase.Domain.Entities;
 
 namespace FeriasTJBase.Application.Interface
 {
-    public interface IFeriasService
+    public interface IFeriasService 
     {
-        Task<List<Ferias>> GetAllFerias();
+        Task<IEnumerable<ConsultaPeriodoAquisitivoDto>> GetAllFerias();
         Task<ConsultaPeriodoAquisitivoDto> GetPeriodoAquisitivoPorIdAsync(int id);
+        Task<IEnumerable<Ferias>> GetAllFeriasComUsufruto();
     }
 }

@@ -14,14 +14,34 @@ namespace FeriasTJBase.Application.Services
             _feriasRepository = feriasRepository;
         }
 
-        public async Task<List<Ferias>> GetAllFerias()
+        public Task<IEnumerable<Ferias>> GetAllFeriasComUsufruto()
         {
-            return await _feriasRepository.GetAllFeriasAsync();            
+            return _feriasRepository.GetAllFerias();            
+        }
+        public async Task<IEnumerable<ConsultaPeriodoAquisitivoDto>> GetAllFerias()
+        {
+            var periodo = _feriasRepository.ObterTodaLista().Result;
+            var dto = periodo.Select(e => new ConsultaPeriodoAquisitivoDto
+            {
+                IdFerias = e.IdFerias,
+                Matricula = e.Matricula,
+                PeriodoAquisitivoInicial = e.PeriodoAquisitivoInicial,
+                PeriodoAquisitivoFinal = e.PeriodoAquisitivoFinal
+            });
+            return dto;
         }
 
-        public Task<ConsultaPeriodoAquisitivoDto> GetPeriodoAquisitivoPorIdAsync(int id)
+        public async Task<ConsultaPeriodoAquisitivoDto> GetPeriodoAquisitivoPorIdAsync(int id)
         {
-           return  _feriasRepository.GetPeriodoAquisitivoPorId(id);
+           var ferias = _feriasRepository.ObterPeloId(id).Result;
+            return new ConsultaPeriodoAquisitivoDto()
+            {
+                IdFerias = ferias.IdFerias,
+                Matricula = ferias.Matricula,
+                PeriodoAquisitivoInicial = ferias.PeriodoAquisitivoInicial,
+                PeriodoAquisitivoFinal = ferias.PeriodoAquisitivoFinal
+            };
+        
         }
     }
 }

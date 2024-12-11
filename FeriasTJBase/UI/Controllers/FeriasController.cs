@@ -15,6 +15,14 @@ namespace FeriasTJBase.UI.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetAllFeriasComUsufruto()
+        {
+            var listaFerias = _feriasService.GetAllFeriasComUsufruto();
+
+            return Ok(listaFerias);
+        }
+
+        [HttpGet("periodosaquisitivo")]
         public IActionResult GetAllFerias()
         {
             var listaFerias = _feriasService.GetAllFerias();

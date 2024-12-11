@@ -4,6 +4,7 @@ using FeriasTJBase.Domain.Interface;
 using FeriasTJBase.Infra.Configurations;
 using FeriasTJBase.Infra.Messaging;
 using FeriasTJBase.Infra.Repositories;
+using FeriasTJBase.Infra.Repositories.Base;
 using FeriasTJBase.Infra.Security;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,12 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-     /*.AddJsonOptions(options =>
-     {
-         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-         options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
-     });*/
+
 builder.Services.AddScoped<IFeriasRepository, FeriasRepository>();
+builder.Services.AddScoped<IUsufrutoService, UsufrutoService>();
+builder.Services.AddScoped<IUsufrutoRepository, UsufrutoRepository>();
 builder.Services.AddSingleton<IDescriptografiaService, DescriptografiaService>();
 builder.Services.AddHostedService<RabbitMqEscuta>();
 builder.Services.AddScoped<IFeriasService, FeriasSerivce>();

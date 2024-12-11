@@ -8,8 +8,6 @@ namespace FeriasTJBase.Infra.Configurations
     {
         public PgDbContext(DbContextOptions<PgDbContext> options) : base(options) { }
 
-
-
         public DbSet<Ferias> Ferias { get; set; }
         public DbSet<Usufruto> Usufruto { get; set; }
 

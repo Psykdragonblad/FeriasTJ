@@ -24,6 +24,10 @@ namespace FeriasTJBase.Infra.Configurations
                 .HasMany(b => b.Usufrutos)
                 .WithOne(u => u.Ferias)
                 .HasForeignKey(u => u.IdFerias);
+
+            modelBuilder.Entity<Ferias>()
+                .Property(f => f.IdFerias)
+                .ValueGeneratedOnAdd();
         }
     }
 }

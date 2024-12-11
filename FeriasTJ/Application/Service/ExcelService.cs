@@ -4,16 +4,18 @@ using FeriasTJ.Models;
 using OfficeOpenXml;
 namespace FeriasTJ.Application.Service
 {
-    public class ExcelService(IRabbitMqEnvia rabbitMqEnvia, string filePath) : IExcelService
+    public class ExcelService : IExcelService
     {
 
-        private readonly string _filePath = filePath;
+        private readonly string _filePath;
 
-        private readonly IRabbitMqEnvia _rabbitMqEnvia = rabbitMqEnvia;
+        private readonly IRabbitMqEnvia _rabbitMqEnvia;
 
-        static ExcelService()
+        public ExcelService(IRabbitMqEnvia rabbitMqEnvia, string filePath)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            _filePath = filePath;
+            _rabbitMqEnvia = rabbitMqEnvia;
         }
         // Método para salvar arquivo no servidor.
         public void SaveFile(IFormFile file, string fileName = "modelo.xls")

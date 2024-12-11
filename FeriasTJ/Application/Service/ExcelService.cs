@@ -1,25 +1,18 @@
 ﻿using FeriasTJ.Domain.Entities;
 using FeriasTJ.Infra.Interface;
-using FeriasTJ.Infra.Messaging;
 using FeriasTJ.Models;
-using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
-using System;
-using System.Collections.Generic;
-using System.IO;
 namespace FeriasTJ.Application.Service
 {
-    public class ExcelService : IExcelService
+    public class ExcelService(IRabbitMqEnvia rabbitMqEnvia, string filePath) : IExcelService
     {
 
-        private readonly string _filePath;
+        private readonly string _filePath = filePath;
 
-        private readonly IRabbitMqEnvia _rabbitMqEnvia;
+        private readonly IRabbitMqEnvia _rabbitMqEnvia = rabbitMqEnvia;
 
-        public ExcelService(IRabbitMqEnvia rabbitMqEnvia)
+        static ExcelService()
         {
-            _filePath = Directory.GetCurrentDirectory();
-            _rabbitMqEnvia = rabbitMqEnvia;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
         // Método para salvar arquivo no servidor.

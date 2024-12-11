@@ -15,12 +15,12 @@ namespace FeriasTJBase.Infra.Repositories.Base
         }
         public async Task<T> ObterPeloId(int id)
         {
-            return _dbSet.Find(id);
+            return await _dbSet.FindAsync(id);
         }
 
         public async Task<IEnumerable<T>> ObterTodaLista()
         {
-           return _dbSet.ToList();
+           return await _dbSet.ToListAsync();
         }
     }
 }

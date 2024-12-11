@@ -9,8 +9,9 @@ namespace FeriasTJBase.Test.Controllers
 {
     public class FeriasControllerTest
     {
-        private readonly FeriasController _feriasController;
         private readonly Mock<IFeriasService> _feriasServiceMoq;
+        private readonly FeriasController _feriasController;
+        
 
         public FeriasControllerTest()
         {
@@ -19,7 +20,7 @@ namespace FeriasTJBase.Test.Controllers
         }
 
         [Fact]
-        public void RetornaListaDeFerias()
+        public async void RetornaListaDeFerias()
         {
             var ferias = new Ferias
             {
@@ -27,9 +28,9 @@ namespace FeriasTJBase.Test.Controllers
                 Matricula = 5007950,
                 PeriodoAquisitivoInicial = Convert.ToDateTime("10/10/2020"),
                 PeriodoAquisitivoFinal = Convert.ToDateTime("10/10/2021"),
-                Usufrutos = new List<Usufruto>
+                Usufrutos =
                 {
-                   new Usufruto
+                   new()
                    {
                        IdFerias = 1,
                        IdUsufruto = 1,
@@ -37,7 +38,7 @@ namespace FeriasTJBase.Test.Controllers
                        UsufrutoInicial = Convert.ToDateTime("20/10/2021"),
                        UsufrutoFinal = Convert.ToDateTime("30/10/2021")
                    },
-                   new Usufruto
+                   new()
                    {
                        IdFerias = 1,
                        IdUsufruto = 1,
@@ -52,13 +53,13 @@ namespace FeriasTJBase.Test.Controllers
             var listaFerias = new List<Ferias> { ferias };
             _feriasServiceMoq.Setup(service => service.GetAllFeriasComUsufruto()).ReturnsAsync(listaFerias);
 
-            var result = _feriasController.GetAllFerias();
+            var result = await _feriasController.GetAllFeriasComUsufruto();
 
             var okResult = Assert.IsType <OkObjectResult>(result);
         }
 
         [Fact]
-        public void RetornaListaDePeriodoAquisitivo()
+        public async void RetornaListaDePeriodoAquisitivo()
         {
             var periodoAquisitivo = new ConsultaPeriodoAquisitivoDto
             {
@@ -71,13 +72,13 @@ namespace FeriasTJBase.Test.Controllers
             var listaFerias = new List<ConsultaPeriodoAquisitivoDto> { periodoAquisitivo };
             _feriasServiceMoq.Setup(service => service.GetAllFerias()).ReturnsAsync(listaFerias);
 
-            var result = _feriasController.GetAllFerias();
+            var result = await _feriasController.GetAllFerias();
 
             var okResult = Assert.IsType<OkObjectResult>(result);
         }
 
         [Fact]
-        public void RetornaPeriodoAquisitivo()
+        public async void RetornaPeriodoAquisitivo()
         {
             var ferias = new ConsultaPeriodoAquisitivoDto
             {
@@ -89,7 +90,7 @@ namespace FeriasTJBase.Test.Controllers
  
             _feriasServiceMoq.Setup(service => service.GetPeriodoAquisitivoPorIdAsync(ferias.IdFerias)).ReturnsAsync(ferias);
 
-            var result = _feriasController.GetPeriodoAquisitivoPorId(ferias.IdFerias);
+            var result = await _feriasController.GetPeriodoAquisitivoPorId(ferias.IdFerias);
 
             var okResult = Assert.IsType<OkObjectResult>(result);
         }

@@ -1,4 +1,5 @@
 using FeriasTJBase.Application.Interface;
+using FeriasTJBase.Application.Mappings;
 using FeriasTJBase.Application.Services;
 using FeriasTJBase.Domain.Interface;
 using FeriasTJBase.Infra.Configurations;
@@ -7,12 +8,18 @@ using FeriasTJBase.Infra.Repositories;
 using FeriasTJBase.Infra.Repositories.Base;
 using FeriasTJBase.Infra.Security;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+   /* .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    })*/
+    ;
 
 builder.Services.AddScoped<IFeriasRepository, FeriasRepository>();
 builder.Services.AddScoped<IUsufrutoService, UsufrutoService>();
@@ -25,7 +32,9 @@ builder.Services.AddScoped<IFeriasService, FeriasSerivce>();
 builder.Services.AddDbContext<PgDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PgConnection")));
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

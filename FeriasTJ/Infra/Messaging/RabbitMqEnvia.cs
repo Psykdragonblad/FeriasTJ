@@ -7,14 +7,9 @@ using System.Text;
 
 namespace FeriasTJ.Infra.Messaging
 {
-    public class RabbitMqEnvia : IRabbitMqEnvia
+    public class RabbitMqEnvia(ICriptografiaSerivce criptografiaSerivce) : IRabbitMqEnvia
     {
-        private readonly ICriptografiaSerivce _criptografiaSerivce;
-
-        public RabbitMqEnvia(ICriptografiaSerivce criptografiaSerivce)
-        {
-            _criptografiaSerivce = criptografiaSerivce;
-        }
+        private readonly ICriptografiaSerivce _criptografiaSerivce = criptografiaSerivce;
 
         public void SendFerias(Ferias ferias)
         {

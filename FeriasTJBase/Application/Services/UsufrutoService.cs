@@ -4,13 +4,10 @@ using FeriasTJBase.Domain.Interface;
 
 namespace FeriasTJBase.Application.Services
 {
-    public class UsufrutoService : IUsufrutoService
+    public class UsufrutoService(IUsufrutoRepository repository) : IUsufrutoService
     {
-        private readonly IUsufrutoRepository _repository;
-        public UsufrutoService(IUsufrutoRepository repository) 
-        {
-            _repository = repository;
-        }
+        private readonly IUsufrutoRepository _repository = repository;
+        
         public Task<IEnumerable<Usufruto>> GetAllUsufruto()
         {
             return _repository.ObterTodaLista();

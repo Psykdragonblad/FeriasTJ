@@ -18,30 +18,8 @@ namespace FeriasTJBase.Infra.Repositories
 
         public async Task<IEnumerable<Ferias>> GetAllFerias()
         {
-            return _pgDbContext.Set<Ferias>().Include(f => f.Usufrutos).ToList();
+            return await _pgDbContext.Set<Ferias>().AsNoTracking().Include(f => f.Usufrutos).ToListAsync();               
         }
-
-        /* public async Task<List<Ferias>> GetAllFeriasAsync()
-         {          
-            return  _pgDbContext.Set<Ferias>().Include(f => f.Usufrutos).ToList();
-         }
-
-         public async Task<ConsultaPeriodoAquisitivoDto> GetPeriodoAquisitivoPorId(int id)
-         {
-             var ferias =  _pgDbContext.Set<Ferias>().FirstOrDefault(e => e.IdFerias == id);
-
-             if (ferias == null) { 
-                 return new ConsultaPeriodoAquisitivoDto();
-             }
-
-             return new ConsultaPeriodoAquisitivoDto()
-             {
-                 IdFerias = ferias.IdFerias,
-                 Matricula = ferias.Matricula,
-                 PeriodoAquisitivoInicial = ferias.PeriodoAquisitivoInicial,
-                 PeriodoAquisitivoFinal = ferias.PeriodoAquisitivoFinal
-             };
-         }*/
 
         public async Task SalvarFerias(Ferias ferias)
         {

@@ -7,16 +7,13 @@ namespace FeriasTJ.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    public class ExcelController : ControllerBase
+    public class ExcelController(IExcelService excelService) : ControllerBase
     {
-        private readonly IExcelService _excelService;
-
-        public ExcelController(IExcelService excelService)
-        {
-            _excelService = excelService;
-        }
+        private readonly IExcelService _excelService = excelService;
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ProcessarArquivo([FromForm] FileUploadModel model)
         {
             if (model.File == null || model.File.Length == 0)

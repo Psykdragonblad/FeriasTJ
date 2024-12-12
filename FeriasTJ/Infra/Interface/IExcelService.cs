@@ -1,4 +1,5 @@
-﻿using FeriasTJ.Models;
+﻿using FeriasTJ.Domain.Entities;
+using FeriasTJ.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FeriasTJ.Infra.Interface
@@ -9,6 +10,6 @@ namespace FeriasTJ.Infra.Interface
 
         public List<string[]> ReadData();
 
-        public void ProcessarArquivo(FileUploadModel model);
+        public Ferias ProcessarExcelEmFerias(FileUploadModel model);
     }
 }

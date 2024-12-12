@@ -32,8 +32,8 @@ x86/
 bld/
 [Bb]in/
 /[Oo]bj/
-[Ll]og/
-[Ll]ogs/
+FeriasTJ/[Ll]og/
+FeriasTJBase/[Ll]ogs/
 FeriasTJ/bin/
 FeriasTJ/obj/
 FeriasTJBase/bin/

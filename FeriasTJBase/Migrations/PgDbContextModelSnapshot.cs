@@ -34,14 +34,14 @@ namespace FeriasTJBase.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("PeriodoAquisitivoFinal")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("PeriodoAquisitivoInicial")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("IdFerias");
 
-                    b.ToTable("Ferias");
+                    b.ToTable("ferias");
                 });
 
             modelBuilder.Entity("FeriasTJBase.Domain.Entities.Usufruto", b =>
@@ -59,16 +59,16 @@ namespace FeriasTJBase.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("UsufrutoFinal")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("UsufrutoInicial")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("IdUsufruto");
 
                     b.HasIndex("IdFerias");
 
-                    b.ToTable("Usufruto");
+                    b.ToTable("usufruto");
                 });
 
             modelBuilder.Entity("FeriasTJBase.Domain.Entities.Usufruto", b =>

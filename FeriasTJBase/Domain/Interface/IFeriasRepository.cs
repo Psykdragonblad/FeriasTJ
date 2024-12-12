@@ -1,9 +1,12 @@
-﻿using FeriasTJBase.Domain.Entities;
+﻿using FeriasTJBase.Application.Dtos.Ferias;
+using FeriasTJBase.Application.Interface;
+using FeriasTJBase.Domain.Entities;
 
 namespace FeriasTJBase.Domain.Interface
 {
-    public interface IFeriasRepository
+    public interface IFeriasRepository : IReadOnlyRepository<Ferias>
     {
         Task SalvarFerias(Ferias ferias);
+        Task<IEnumerable<Ferias>> GetAllFerias();
     }
 }

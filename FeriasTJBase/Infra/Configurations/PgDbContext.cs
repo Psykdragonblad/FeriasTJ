@@ -11,6 +11,7 @@ namespace FeriasTJBase.Infra.Configurations
         public DbSet<Ferias> Ferias { get; set; }
         public DbSet<Usufruto> Usufruto { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Ferias>()
@@ -18,11 +19,15 @@ namespace FeriasTJBase.Infra.Configurations
 
             modelBuilder.Entity<Usufruto>()
                 .HasKey(f => f.IdUsufruto);
-
+           
             modelBuilder.Entity<Ferias>()
                 .HasMany(b => b.Usufrutos)
                 .WithOne(u => u.Ferias)
                 .HasForeignKey(u => u.IdFerias);
+
+            modelBuilder.Entity<Ferias>()
+                .Property(f => f.IdFerias)
+                .ValueGeneratedOnAdd();
         }
     }
 }

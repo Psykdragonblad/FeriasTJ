@@ -4,6 +4,6 @@ namespace FeriasTJ.Infra.Interface
 {
     public interface IRabbitMqEnvia
     {
-        public void SendFerias(Ferias ferias);
+        public void EnviarFerias(Ferias ferias);
     }
 }

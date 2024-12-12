@@ -7,52 +7,51 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FeriasTJBase.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateTableFeriasUsufruto : Migration
+    public partial class CriacaoTabelasFeriasUsufrutos : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Ferias",
+                name: "ferias",
                 columns: table => new
                 {
                     IdFerias = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Matricula = table.Column<int>(type: "integer", nullable: false),
-                    Nome = table.Column<string>(type: "text", nullable: false),
-                    PeriodoAquisitivoInicial = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PeriodoAquisitivoFinal = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    PeriodoAquisitivoInicial = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    PeriodoAquisitivoFinal = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ferias", x => x.IdFerias);
+                    table.PrimaryKey("PK_ferias", x => x.IdFerias);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usufruto",
+                name: "usufruto",
                 columns: table => new
                 {
                     IdUsufruto = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     IdFerias = table.Column<int>(type: "integer", nullable: false),
-                    UsufrutoInicial = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UsufrutoFinal = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UsufrutoInicial = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UsufrutoFinal = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Status = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usufruto", x => x.IdUsufruto);
+                    table.PrimaryKey("PK_usufruto", x => x.IdUsufruto);
                     table.ForeignKey(
-                        name: "FK_Usufruto_Ferias_IdFerias",
+                        name: "FK_usufruto_ferias_IdFerias",
                         column: x => x.IdFerias,
-                        principalTable: "Ferias",
+                        principalTable: "ferias",
                         principalColumn: "IdFerias",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usufruto_IdFerias",
-                table: "Usufruto",
+                name: "IX_usufruto_IdFerias",
+                table: "usufruto",
                 column: "IdFerias");
         }
 
@@ -60,10 +59,10 @@ namespace FeriasTJBase.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Usufruto");
+                name: "usufruto");
 
             migrationBuilder.DropTable(
-                name: "Ferias");
+                name: "ferias");
         }
     }
 }

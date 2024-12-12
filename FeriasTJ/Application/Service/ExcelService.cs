@@ -1,26 +1,22 @@
 ﻿using FeriasTJ.Domain.Entities;
 using FeriasTJ.Infra.Interface;
-using FeriasTJ.Infra.Messaging;
 using FeriasTJ.Models;
-using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
-using System;
-using System.Collections.Generic;
-using System.IO;
-namespace FeriasTJ.Infra.Service
+namespace FeriasTJ.Application.Service
 {
     public class ExcelService : IExcelService
     {
 
         private readonly string _filePath;
+       // private readonly ILogger<ExcelService> _logger;
+        //private readonly IRabbitMqEnvia _rabbitMqEnvia;
 
-        private readonly IRabbitMqEnvia _rabbitMqEnvia;
-
-        public ExcelService(IRabbitMqEnvia rabbitMqEnvia)
+        public ExcelService(string filePath)
         {
-            _filePath = Directory.GetCurrentDirectory();
-            _rabbitMqEnvia = rabbitMqEnvia;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            _filePath = filePath;
+            //_rabbitMqEnvia = rabbitMqEnvia;
+           // _logger = logger;
         }
         // Método para salvar arquivo no servidor.
         public void SaveFile(IFormFile file, string fileName = "modelo.xls")
@@ -56,7 +52,7 @@ namespace FeriasTJ.Infra.Service
             }
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -107,7 +103,7 @@ namespace FeriasTJ.Infra.Service
             return result;
         }
 
-        public void ProcessarArquivo(FileUploadModel model)
+        public Ferias ProcessarExcelEmFerias(FileUploadModel model)
         {
 
             var ferias = new Ferias();
@@ -127,13 +123,12 @@ namespace FeriasTJ.Infra.Service
                     var usufruto = new Usufruto();
                     usufruto.UsufrutoInicial = Convert.ToDateTime(worksheet.Cells[row, 3].Text);
                     usufruto.UsufrutoFinal = Convert.ToDateTime(worksheet.Cells[row, 6].Text);
-                    usufruto.Status = (worksheet.Cells[row, 8].Text == "Ativo") ? true : false;
+                    usufruto.Status = worksheet.Cells[row, 8].Text == "Ativo" ? true : false;
                     ferias.Usufrutos.Add(usufruto);
                 }
             }
-
-            _rabbitMqEnvia.SendFerias(ferias);
-
+            return ferias;
+            
         }
 
     }

@@ -1,4 +1,4 @@
-using FeriasTJ.Infra.Service;
+using FeriasTJ.Application.Service;
 using FeriasTJ.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
@@ -33,10 +33,10 @@ namespace FeriasTJ.Test
             formFile.Setup(f => f.CopyTo(It.IsAny<Stream>())).Callback<Stream>(s => stream.CopyTo(s));
             model.File = formFile.Object;
             //act
-            ExcelService service = new ExcelService(_rabbitMqEnvia);
+            ExcelService service = new ExcelService(fileName);
 
             //assert
-            Assert.Throws<IndexOutOfRangeException>(()=> service.ProcessarArquivo(model));
+            Assert.Throws<IndexOutOfRangeException>(()=> service.ProcessarExcelEmFerias(model));
         }
     }
 }

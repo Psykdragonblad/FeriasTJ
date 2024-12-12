@@ -1,8 +1,6 @@
 ﻿using FeriasTJBase.Application.Interface;
 using FeriasTJBase.Domain.Entities;
 using FeriasTJBase.Domain.Interface;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -13,20 +11,21 @@ namespace FeriasTJBase.Infra.Messaging
     public class RabbitMqEscuta : BackgroundService
     {
         private readonly string _queueName = "minha-fila";
-        private IModel _channel;
-        private IConnection _connection;
+        private readonly IModel _channel;
+        private readonly IConnection _connection;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IDescriptografiaService _descriptografiaService;
+        private readonly ILogger<RabbitMqEscuta> _logger;
 
-        public RabbitMqEscuta(IServiceScopeFactory serviceScopeFactory, IDescriptografiaService descriptografiaService)
+        public RabbitMqEscuta(IServiceScopeFactory serviceScopeFactory, IDescriptografiaService descriptografiaService, ILogger<RabbitMqEscuta> logger)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _descriptografiaService = descriptografiaService;
             var factory = new ConnectionFactory() { HostName = "localhost", Port = 5672 };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-
-            _channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+            _logger = logger;
+            _channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);            
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -36,23 +35,38 @@ namespace FeriasTJBase.Infra.Messaging
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
+                
+                _logger.LogInformation("Mensagem recebida da fila: {Message}", message);
 
-                //Descriptografar a mensagem
-                var descriptografado = _descriptografiaService.Descriptar(message);
-                var ferias = JsonConvert.DeserializeObject<Ferias>(descriptografado);
-
-                if (ferias != null)
+                try
                 {
-                    //Console.WriteLine($"Entrou: {message}");
+                    //Descriptografar a mensagem
+                    var descriptografado = _descriptografiaService.Descriptar(message);
+                    var ferias = JsonConvert.DeserializeObject<Ferias>(descriptografado);
 
-                    // Cria um novo escopo para resolver IFeriasRepository
-                    using (var scope = _serviceScopeFactory.CreateScope())
+                    if (ferias != null)
                     {
-                        var feriasRepository = scope.ServiceProvider.GetRequiredService<IFeriasRepository>();
-                        await feriasRepository.SalvarFerias(ferias);
+                        _logger.LogInformation("Mensagem descriptografada e deserializada com sucesso. Processando dados de férias.");
+
+
+                        // Cria um novo escopo para resolver IFeriasRepository
+                        using (var scope = _serviceScopeFactory.CreateScope())
+                        {
+                            var feriasRepository = scope.ServiceProvider.GetRequiredService<IFeriasRepository>();
+                            await feriasRepository.SalvarFerias(ferias);
+
+                            _logger.LogInformation("Dados de férias salvos com sucesso no repositório.");
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Falha ao desserializar a mensagem para o tipo 'Ferias'. Mensagem: {Message}", message);
                     }
                 }
-                //Console.WriteLine($"Mensagem recebida: {message}");
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Erro ao processar a mensagem: {Message}", message);
+                }
             };
 
             _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
@@ -62,6 +76,7 @@ namespace FeriasTJBase.Infra.Messaging
 
         public override void Dispose()
         {
+            _logger.LogInformation("Fechando a conexão e o canal do RabbitMQ.");
             _channel.Close();
             _channel.Dispose();
             _connection.Close();

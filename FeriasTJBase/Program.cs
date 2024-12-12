@@ -8,18 +8,18 @@ using FeriasTJBase.Infra.Repositories;
 using FeriasTJBase.Infra.Repositories.Base;
 using FeriasTJBase.Infra.Security;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers()
-   /* .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    })*/
-    ;
+builder.Services.AddControllers();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole(); // Log no console
+builder.Logging.AddFile("Logs/app-{Date}.log");
 
 builder.Services.AddScoped<IFeriasRepository, FeriasRepository>();
 builder.Services.AddScoped<IUsufrutoService, UsufrutoService>();

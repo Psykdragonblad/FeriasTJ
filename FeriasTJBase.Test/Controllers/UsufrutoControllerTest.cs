@@ -3,6 +3,7 @@ using FeriasTJBase.Domain.Entities;
 using FeriasTJBase.UI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Microsoft.Extensions.Logging;
 
 namespace FeriasTJBase.Test.Controllers
 {
@@ -10,11 +11,13 @@ namespace FeriasTJBase.Test.Controllers
     {
         private readonly Mock<IUsufrutoService> _usufrutoServiceMock;
         private readonly UsufrutoController _usufrutoControllerMock;
+        private readonly Mock<ILogger<UsufrutoController>> _loggerMock;
 
         public UsufrutoControllerTest()
         {
             _usufrutoServiceMock = new Mock<IUsufrutoService>();
-            _usufrutoControllerMock = new UsufrutoController(_usufrutoServiceMock.Object);
+            _loggerMock = new Mock<ILogger<UsufrutoController>>();
+            _usufrutoControllerMock = new UsufrutoController(_usufrutoServiceMock.Object, _loggerMock.Object);
         }
 
         [Fact]

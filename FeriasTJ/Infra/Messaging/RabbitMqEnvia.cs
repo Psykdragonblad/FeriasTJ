@@ -7,26 +7,38 @@ using System.Text;
 
 namespace FeriasTJ.Infra.Messaging
 {
-    public class RabbitMqEnvia(ICriptografiaSerivce criptografiaSerivce) : IRabbitMqEnvia
+    public class RabbitMqEnvia(ICriptografiaSerivce criptografiaSerivce, ILogger<RabbitMqEnvia> logger) : IRabbitMqEnvia
     {
         private readonly ICriptografiaSerivce _criptografiaSerivce = criptografiaSerivce;
+        private readonly ILogger<RabbitMqEnvia> _logger = logger;
 
-        public void SendFerias(Ferias ferias)
+        public void EnviarFerias(Ferias ferias)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            using var connection = factory.CreateConnection();
-            using var channel = connection.CreateModel();
+            _logger.LogInformation("Iniciando o EnviarFerias");
+            try
+            {
+                var factory = new ConnectionFactory() { HostName = "localhost" };
+                using var connection = factory.CreateConnection();
+                using var channel = connection.CreateModel();
 
-            channel.QueueDeclare(queue: "minha-fila", durable: false, exclusive: false, autoDelete: false, arguments: null);
+                channel.QueueDeclare(queue: "minha-fila", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-            // Serializa o objeto Ferias em JSON
-            var jsonMessage = JsonConvert.SerializeObject(ferias);
-            
-            // Criptogragar a mensagem
-            var encriptado = _criptografiaSerivce.Encriptar(jsonMessage);
-            var body = Encoding.UTF8.GetBytes(encriptado);
+                // Serializa o objeto Ferias em JSON
+                var jsonMessage = JsonConvert.SerializeObject(ferias);
 
-            channel.BasicPublish(exchange: "", routingKey: "minha-fila", basicProperties: null, body: body);
+                // Criptogragar a mensagem
+                var encriptado = _criptografiaSerivce.Encriptar(jsonMessage);
+                var body = Encoding.UTF8.GetBytes(encriptado);
+                
+                channel.BasicPublish(exchange: "", routingKey: "minha-fila", basicProperties: null, body: body);
+
+                _logger.LogInformation("Mensagem Enviada com sucesso para o rabbitmq");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao enviar a mensagem para o rabbitmq");
+                throw new Exception(ex.Message);
+            }            
         }
     }
 }

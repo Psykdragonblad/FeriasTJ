@@ -7,18 +7,30 @@ namespace FeriasTJBase.UI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class FeriasController(IFeriasService feriasService) : ControllerBase
+    public class FeriasController(IFeriasService feriasService, ILogger<FeriasController> logger) : ControllerBase
     {
         private readonly IFeriasService _feriasService = feriasService;
+        private readonly ILogger<FeriasController> _logger = logger;
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Ferias>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllFeriasComUsufruto()
         {
-            var listaFerias = await _feriasService.GetAllFeriasComUsufruto();
+            _logger.LogInformation("Iniciando o GetAllFeriasComUsufruto");
+            try
+            {
+                var listaFerias = await _feriasService.GetAllFeriasComUsufruto();
 
-            return Ok(listaFerias);
+                _logger.LogInformation("GetAllFeriasComUsufruto obitido com sucesso");
+                return Ok(listaFerias);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao executar GetAllFeriasComUsufruto");
+                return StatusCode(500, new { message = "Erro interno no servidor." });
+            }
+
         }
 
         [HttpGet("PeriodosAquisitivos")]
@@ -26,9 +38,20 @@ namespace FeriasTJBase.UI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllFerias()
         {
-            var listaFerias = await _feriasService.GetAllFerias();
+            _logger.LogInformation("Iniciando o GetAllFerias");
+            try
+            {
+                var listaFerias = await _feriasService.GetAllFerias();
 
-            return Ok(listaFerias);
+                _logger.LogInformation("GetAllFerias obitido com sucesso");
+                return Ok(listaFerias);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao executar GetAllFerias");
+                return StatusCode(500, new { message = "Erro interno no servidor." });
+            }
+
         }
 
         [HttpGet("{id}")]
@@ -36,14 +59,25 @@ namespace FeriasTJBase.UI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetPeriodoAquisitivoPorId(int id)
         {
-            var periodoAquisitivo = await _feriasService.GetPeriodoAquisitivoPorIdAsync(id);
-
-            if (periodoAquisitivo == null)
+            _logger.LogInformation("Iniciando o GetPeriodoAquisitivoPorId com o ID {id}",id);
+            try
             {
-                return NotFound(new { message = "Período Aquisitivo não encontrado" });
-            }
+                var periodoAquisitivo = await _feriasService.GetPeriodoAquisitivoPorIdAsync(id);
 
-            return Ok(periodoAquisitivo);
+                if (periodoAquisitivo == null)
+                {
+                    _logger.LogWarning("Período Aquisitivo não encontrado para o ID: {id}", id);
+                    return NotFound(new { message = "Período Aquisitivo não encontrado" });
+                }
+                _logger.LogInformation("GetPeriodoAquisitivoPorId obitido com sucesso");
+                return Ok(periodoAquisitivo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao executar GetPeriodoAquisitivoPorId. ID: {Id}", id);
+                return StatusCode(500, new { message = "Erro interno no servidor." });
+            }
+            
         }
     }
 }

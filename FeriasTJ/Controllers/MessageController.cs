@@ -16,7 +16,7 @@ namespace FeriasTJ.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult SendMessage([FromBody] Ferias message)
         {
-            _rabbitMqEnvia.SendFerias(message);
+           //_rabbitMqEnvia.SendFerias(message);
             return Ok("Mensagem enviada para a fila");
         }
     }

@@ -8,14 +8,15 @@ namespace FeriasTJ.Application.Service
     {
 
         private readonly string _filePath;
+       // private readonly ILogger<ExcelService> _logger;
+        //private readonly IRabbitMqEnvia _rabbitMqEnvia;
 
-        private readonly IRabbitMqEnvia _rabbitMqEnvia;
-
-        public ExcelService(IRabbitMqEnvia rabbitMqEnvia, string filePath)
+        public ExcelService(string filePath)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             _filePath = filePath;
-            _rabbitMqEnvia = rabbitMqEnvia;
+            //_rabbitMqEnvia = rabbitMqEnvia;
+           // _logger = logger;
         }
         // Método para salvar arquivo no servidor.
         public void SaveFile(IFormFile file, string fileName = "modelo.xls")
@@ -51,7 +52,7 @@ namespace FeriasTJ.Application.Service
             }
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -102,7 +103,7 @@ namespace FeriasTJ.Application.Service
             return result;
         }
 
-        public void ProcessarArquivo(FileUploadModel model)
+        public Ferias ProcessarExcelEmFerias(FileUploadModel model)
         {
 
             var ferias = new Ferias();
@@ -126,9 +127,8 @@ namespace FeriasTJ.Application.Service
                     ferias.Usufrutos.Add(usufruto);
                 }
             }
-
-            _rabbitMqEnvia.SendFerias(ferias);
-
+            return ferias;
+            
         }
 
     }

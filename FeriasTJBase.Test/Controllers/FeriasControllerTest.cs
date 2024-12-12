@@ -3,6 +3,7 @@ using FeriasTJBase.Application.Interface;
 using FeriasTJBase.Domain.Entities;
 using FeriasTJBase.UI.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace FeriasTJBase.Test.Controllers
@@ -11,12 +12,14 @@ namespace FeriasTJBase.Test.Controllers
     {
         private readonly Mock<IFeriasService> _feriasServiceMoq;
         private readonly FeriasController _feriasController;
+        private readonly Mock<ILogger<FeriasController>> _loggerMock;
         
 
         public FeriasControllerTest()
         {
             _feriasServiceMoq = new Mock<IFeriasService>();
-            _feriasController = new FeriasController(_feriasServiceMoq.Object);
+            _loggerMock = new Mock<ILogger<FeriasController>>();
+            _feriasController = new FeriasController(_feriasServiceMoq.Object,_loggerMock.Object);
         }
 
         [Fact]

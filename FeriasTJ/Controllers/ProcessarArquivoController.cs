@@ -8,10 +8,10 @@ namespace FeriasTJ.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    public class ExcelController(ILogger<ExcelController> logger, IProcessarArquivoService processarArquivoService) : ControllerBase
+    public class ProcessarArquivoController(ILogger<ProcessarArquivoController> logger, IProcessarArquivoService processarArquivoService) : ControllerBase
     {
         private readonly IProcessarArquivoService _processarArquivoService = processarArquivoService;
-        private readonly ILogger<ExcelController> _logger = logger;
+        private readonly ILogger<ProcessarArquivoController> _logger = logger;
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]

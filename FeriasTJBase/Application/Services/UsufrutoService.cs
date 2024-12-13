@@ -8,14 +8,16 @@ namespace FeriasTJBase.Application.Services
     {
         private readonly IUsufrutoRepository _repository = repository;
         
-        public Task<IEnumerable<Usufruto>> GetAllUsufruto()
+        public async Task<IEnumerable<Usufruto>> GetAllUsufruto()
         {
-            return _repository.ObterTodaLista();
+            var lista = await _repository.ObterTodaLista();
+            return lista.Where(e => e.Status).ToList();
         }
 
-        public Task<Usufruto> GetUsufrutoPeloId(int id)
+        public async Task<Usufruto> GetUsufrutoPeloId(int id)
         {
-           return _repository.ObterPeloId(id);
+           var usufruto =  await _repository.ObterPeloId(id);
+           return usufruto != null && usufruto.Status ? usufruto : null;
         }
     }
 }

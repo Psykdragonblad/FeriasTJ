@@ -9,12 +9,8 @@ using FeriasTJ.Infra.Interface;
 namespace FeriasTJ.Test
 {
     public class ExcelServiceProcessarArquivo
-    {
-        private readonly IRabbitMqEnvia _rabbitMqEnvia;
-        public ExcelServiceProcessarArquivo()
-        {
-            var _rabbitMqEnvia = new Mock<IRabbitMqEnvia>();
-        }
+    {      
+       
         [Fact]
         public void CriarArquivoComCaminhoInvalido()
         {

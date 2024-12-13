@@ -41,6 +41,12 @@ namespace FeriasTJBase.UI.Controllers
             {
                 var usufruto = await _usufrutoService.GetUsufrutoPeloId(id);
 
+                if (usufruto == null)
+                {
+                    _logger.LogWarning("Usufruto não encontrado para o ID: {id}", id);
+                    return NotFound(new { message = "Usufruto não encontrado" });
+                }
+
                 _logger.LogInformation("GetUsufrutoById obitido com sucesso");
                 return Ok(usufruto);
             }
